@@ -1,38 +1,514 @@
-.App {
-  text-align: center;
+.container {
+    display: grid;
+    grid-template-rows: 250px 60px 1fr;
+    min-height: 100vh;
+    font-family: Andale Mono, monospace;
+
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+/* ////////////////////////
+////////////////////////
+/////////////////////// */
+
+/* Мое местоположение */
+.weatherMyCity__wrapper {
+    display: grid;
+    grid-template-columns: 300px 1fr;
+    margin: 15px;
+}
+.container__preloader{
+    display: grid;
+    align-items: center;
+    justify-items: start;
+    margin-left: 60px;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
+.weatherMyCity__wrapper__location {
+    display: grid;
+    grid-template-rows: 30px 1fr;
+    align-items: center;
+    justify-items: center;
+    border-radius: 3%;
+    box-shadow: 0px 25px 25px 0px rgba(45, 69, 95, 0.1);
+    border: 0.1px #c0c0c0 solid;
+    background-image: url("image/cloud.jpg");
+    background-size: cover;
 }
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+.weatherMyCity__wrapper__locationIcon {
+    margin-top: 15px;
 }
 
-.App-link {
-  color: #61dafb;
+.weatherMyCity__wrapper__locationIcon i {
+    font-size: 40px;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.weatherMyCity__wrapper__location h2 {
+    border-bottom: 1px gray solid;
+}
+
+.weatherMyCity__city {
+    display: grid;
+    grid-template-rows: 1fr 1fr;
+    align-items: center;
+    justify-content: center;
+}
+
+.weatherMyCity__iconTemp {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    align-items: center;
+    justify-content: center;
+}
+
+.weatherMyCity__iconTemp img {
+    size: 6em;
+}
+
+.weatherMyCity__temp {
+    display: grid;
+    align-items: center;
+    justify-self: start;
+}
+
+.weatherMyCity__icon {
+    display: grid;
+    align-items: center;
+    justify-self: end;
+}
+
+/* ////////////////////////
+////////////////////////
+/////////////////////// */
+
+/* Кнопка добавления города */
+.app_container__ButtonAddCity i {
+    font-size: 45px;
+    cursor: pointer;
+    margin: 15px;
+}
+
+.app_container__ButtonAddCity i:active {
+    box-shadow: 0px 25px 25px 0px rgba(45, 69, 95, 0.1);
+}
+
+/* ////////////////////////
+////////////////////////
+/////////////////////// */
+
+/* Список добавляемых городов */
+.OtherCites__wrapper {
+    display: grid;
+    grid-template-columns: 300px 1fr;
+    margin: 15px;
+}
+
+.OtherCites__listCites {
+    display: grid;
+    row-gap: 30px;
+}
+
+.weatherOtherCity__city {
+    display: grid;
+}
+
+.weatherOtherCity__city h2 {
+    display: grid;
+    align-items: center;
+    justify-items: center;
+}
+
+/* Добавленный город */
+.weatherOtherCity__city {
+    display: grid;
+    height: 120px;
+    border-radius: 2%;
+    box-shadow: 0px 25px 25px 0px rgba(45, 69, 95, 0.1);
+    position: relative;
+    padding: 15px;
+    border: 0.1px #c0c0c0 solid;
+    background-image: url("image/rain.jpg");
+    background-size: cover;
+}
+
+.weatherOtherCity__city:hover {
+    border: 0.1px gray solid;
+    cursor: pointer;
+}
+
+.weatherOtherCity__deleteCity {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    font-size: 10px;
+    color: rgba(193, 42, 38, 0.83);
+    padding: 15px;
+}
+
+/* ////////////////////////
+////////////////////////
+/////////////////////// */
+
+/* Форма для добавления города */
+.popup {
+    position: fixed;
+    height: 100%;
+    width: 100%;
+    background-color: rgba(44, 44, 44, 0.69);
+    top: 0;
+    left: 0;
+}
+
+.popup__body {
+    min-height: 100%;
+    display: grid;
+    align-items: center;
+    justify-items: center;
+    padding: 30px 10px;
+}
+
+.popup__content {
+    background-color: white;
+    display: grid;
+    grid-template-rows: 40px 60px auto;
+    color: black;
+    max-width: 800px;
+    max-height: 400px;
+    padding: 10px;
+    border-radius: 10px;
+}
+
+.popup__close {
+    display: grid;
+    align-items: start;
+    justify-items: end;
+    font-size: 8px;
+}
+
+.popup__form {
+    display: grid;
+    grid-template-columns: 1fr 65px;
+    column-gap: 10px;
+    margin: 10px;
+}
+
+.popup__input {
+    display: grid;
+    align-items: center;
+    justify-items: center;
+    border: 1px black solid;
+    border-radius: 5px;
+    height: 40px;
+    font-family: Monospaced;
+    font-size: 16px;
+    font-weight: bold;
+    color: rgba(0, 0, 0, 0.8);
+}
+
+.popup__input:hover {
+    border: 1px #50b5ff solid;
+}
+
+.popup__button {
+    display: grid;
+    align-items: center;
+    justify-items: center;
+    font-family: Monospaced;
+    font-size: 16px;
+    border: 1px black solid;
+    border-radius: 5px;
+    background-color: rgba(120, 203, 191, 0.8);
+    color: white;
+}
+
+.popup__button:hover {
+    border: 1px #50b5ff solid;
+    border-radius: 5px;
+}
+
+/*сообщения пользователю Error*/
+.popup__form__error {
+    display: grid;
+    grid-template-columns: 1fr 40px;
+    margin: 10px;
+    color: #fff;
+    padding: 5px;
+    border-radius: 5px;
+    background-color: rgba(120, 203, 191, 0.8);
+    cursor: pointer;
+}
+
+.popup__close__error {
+    display: grid;
+    align-items: center;
+    justify-items: end;
+    margin: 5px 5px 0 0;
+}
+
+.popup__close__error i {
+    font-size: 20px;
+}
+
+/* ////////////////////////
+////////////////////////
+/////////////////////// */
+
+/* Модуль Информации о прогнозе погоды выбранного города */
+
+.info__wrapper {
+    position: fixed;
+    display: grid;
+    padding: 10px;
+    box-shadow: 0px 25px 25px 0px rgba(45, 69, 95, 0.1);
+    right: 0;
+    height: 100vh;
+    width: 100vw;
+    transform: translateX(+100%);
+    transition: all 0.3s;
+    z-index: 2;
+}
+
+.info__wrapper.active {
+    transform: translateX(0);
+}
+
+.info__blur {
+    width: 100%;
+    height: 100%;
+    backdrop-filter: blur(2px);
+    position: absolute;
+    display: grid;
+    align-content: center;
+    justify-items: center;
+}
+
+.info__content {
+    display: grid;
+    grid-template-rows: 35px 1fr 1fr 100px;
+    gap: 10px;
+    padding: 10px;
+    min-width: 320px;
+    max-width: 450px;
+    height: 85vh;
+    background-color: white;
+    transition: all 0.4s;
+    border: 1px solid #50b5ff;
+    border-radius: 10px;
+    box-shadow: 0px 25px 25px 0px rgba(45, 69, 95, 0.1);
+}
+
+.info__close i {
+    display: grid;
+    justify-items: end;
+}
+
+.info__currentCity {
+    display: grid;
+    grid-template-rows: 40px 1fr 30px;
+    background: url("./image/cloud.jpg") no-repeat;
+    background-size: cover;
+    border-radius: 5px;
+}
+
+.info__currentCity__nameCity {
+    display: grid;
+    align-items: center;
+    justify-items: center;
+}
+
+.info__currentCity__iconTemp {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+}
+
+.info__currentCity__iconTemp_icon {
+    display: grid;
+    align-items: center;
+    justify-items: end;
+    margin-right: 10px;
+}
+
+.info__currentCity__iconTemp_temp {
+    display: grid;
+    align-items: center;
+    justify-items: start;
+}
+
+.info__currentCity__clarity {
+    color: black;
+    font-weight: 400;
+    font-size: 17px;
+    display: grid;
+    align-items: center;
+    justify-items: center;
+}
+
+/*Блок прогноза погоды*/
+.info__forecast {
+    display: grid;
+    overflow-y: scroll;
+}
+
+.info__forecast__item {
+    display: grid;
+    grid-template-columns: 110px 1fr 40px 40px;
+    grid-template-rows: 50px;
+    border-bottom: 0.1px #c0c0c0 solid;
+}
+
+.info__forecast__item:hover {
+    border-bottom: 0.1px gray solid;
+    cursor: pointer;
+}
+
+.info__forecast__item:active {
+    box-shadow: 0 0 25px 0 rgba(45, 69, 95, 0.1);
+}
+
+.info__forecast__forecast__dataWeek {
+    display: grid;
+    grid-template-rows: 25px 25px;
+    align-items: center;
+    justify-items: start;
+    padding-left: 10px;
+}
+
+.info__forecast__forecast__data {
+    display: grid;
+    color: gray;
+    font-size: 12px;
+    font-weight: 500;
+    justify-items: start;
+    margin-top: 10px;
+    font-family: "Courier New", Courier, monospace;
+}
+
+.info__forecast__forecast__week {
+    display: grid;
+    align-items: start;
+    justify-items: start;
+    font-weight: bold;
+    font-family: Palatino Linotype, sans-serif;
+    font-size: 13px;
+}
+
+.info__forecast__forecast__icon {
+    display: grid;
+    align-items: center;
+    justify-items: end;
+}
+
+.info__forecast__forecast__icon img {
+    max-width: 40px;
+}
+
+.info__forecast__forecast__day {
+    display: grid;
+    align-items: center;
+    justify-items: center;
+    font-weight: bold;
+}
+
+.info__forecast__forecast__night {
+    display: grid;
+    align-items: center;
+    justify-items: center;
+    color: gray;
+    font-size: 13px;
+}
+
+/*Блок восход и солнца*/
+.info__sunriseSunset__wrapper {
+    display: grid;
+    align-items: center;
+    justify-items: center;
+    color: black;
+    font-weight: bold;
+}
+
+.info__sunriseSunset__wrapper p {
+    font-size: 9px;
+    color: gray;
+}
+
+.info__sunriseSunset__item {
+    display: grid;
+    grid-template-rows: 40px 40px;
+    margin: 0 2em 0 2em;
+    width: 256px;
+}
+
+.info__sunriseSunset__grafity {
+    border-bottom: 2px #ffa500 solid;
+    margin: 0 30px;
+    border-radius: 1px;
+}
+
+.info__sunriseSunset__grafity img {
+    height: 40px;
+    width: 100%;
+}
+
+.info__sunriseSunset__dataSun {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    grid-template-rows: 40px;
+}
+
+.info__sunriseSunset__dataSun__sun {
+    display: grid;
+    grid-template-rows: 10px 20px 10px;
+    align-items: start;
+    justify-items: center;
+    font-size: 11px;
+}
+
+.info__sunriseSunset__dataSun__sun img {
+    margin-top: -13px;
+}
+
+.info__sunriseSunset__dataSun__data {
+    display: grid;
+    grid-template-rows: 20px 40px;
+    font-size: 10px;
+    align-items: start;
+    justify-items: center;
+}
+
+.info__sunriseSunset__dataSun__data__day {
+}
+
+@media screen and (max-width: 767px) {
+    .container {
+        width: 540px;
+    }
+
+    .info__content {
+        display: grid;
+        grid-template-rows: 35px 1fr 1fr 80px;
+        gap: 10px;
+        margin: 2em 50em 3em 2em;
+        padding: 10px;
+        min-width: 320px;
+        max-width: 450px;
+        transition: all 0.4s;
+        border: 1px solid #50b5ff;
+        border-radius: 10px;
+        box-shadow: 0px 25px 25px 0px rgba(45, 69, 95, 0.1);
+    }
+
+    .weatherMyCity__wrapper {
+        display: grid;
+        grid-template-columns: 1fr;
+        width: 280px;
+        margin: 15px;
+    }
+
+    .OtherCites__wrapper {
+        display: grid;
+        grid-template-columns: 280px;
+        margin: 15px;
+        grid-template-columns: 1fr;
+        width: 280px;
+    }
 }

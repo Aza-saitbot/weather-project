@@ -1,123 +1,106 @@
 import React, {useEffect, useState} from "react";
 import "./App.css";
-import Info from "./components/Info";
-import Weather from "./components/Weather";
-import Form from "./components/Form";
+import preloader from './image/1492.gif'
+import {WeatherMyCity} from "./components/WeatherMyCity/WeatherMyCity";
+import {useDispatch, useSelector} from "react-redux";
+import useGeolocation from "react-hook-geolocation";
+import {
+    getMyLocation,
+    getWeatherCity, setDeleteCityAC,
+    setError,
+    setNewCityBody,
+    setShowSelect_City,
+    setWeatherMyCity,
+} from "./redux/weatherCity-reducer";
+import {
+    getActiveCurrentCitySelector,
+    getAddWeatherCitySelector,
+    getErrorSelector,
+    getMyLocationSelector,
+    getNewCityBodySelector,
+} from "./redux/weatherCity-selector";
+import {WeatherOtherCites} from "./components/WeatherOtherCites/WeatherOtherCites";
+import AddCityForm from "./components/WeatherOtherCites/AddCityForm/AddCityForm";
+import Info from "./components/WeatherOtherCites/Cites/Info/Info";
 
+function App() {
+    let [Lat, setLat] = useState(null);
+    let [Long, setLong] = useState(null);
+    const [activeForm, setActiveFrom] = useState(false);
+    const [activeCity, setActiveCity] = useState(false);
 
-const API_KEY = "30401e8c74d0303c857e675a1882143f"
-
-
-/*class App extends React.Component {
-
-/!* state = {
-      error: null,
-      data: []
+    const setActiveForm = (e) => {
+        e.stopPropagation();
+        setActiveFrom(!activeForm);
     };
 
-  componentDidMount() {
-    fetch(`http://api.openweathermap.org/data/2.5/weather?q=Kazan&appid=${API_KEY}&units=metric`)
-        .then(res => res.json())
-        .then(
-            (result) => {
-              this.setState({
-                data: result.data
-              });
-            },
-            (error) => {
-              this.setState({
-                error
-              });
+
+    const MyLocation = useSelector(getMyLocationSelector);
+    const weatherCites = useSelector(getAddWeatherCitySelector);
+    const newCityBody = useSelector(getNewCityBodySelector);
+    const errorForm = useSelector(getErrorSelector);
+    const activeCurrentCity = useSelector(getActiveCurrentCitySelector);
+
+
+    const dispatch = useDispatch();
+
+    const geolocation = useGeolocation({
+        enableHighAccuracy: true,
+        maximumAge: 50000,
+        timeout: 15000,
+    });
+
+    useEffect(() => {
+        if (!geolocation.error) {
+            setLat(geolocation.latitude);
+            setLong(geolocation.longitude);
+            if (Lat) {
+                dispatch(getMyLocation(Lat, Long));
             }
-        )
-  }*!/
+        } else {
+            console.log({message: "No result geolocation"});
+        }
+    }, [geolocation]);
 
- /!* weatherAPI = async (e) => {
-    e.preventDefault();
-    const city = e.target.elements.city.value;
-    const api_url = await fetch(`http://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${API_KEY}&units=metric`);
-    const data = await api_url.json();
-    console.log(data);
-  }*!/
-
-
-  render() {
     return (
-      <div className="app-container">
-        <Info/>
-        <Form weather={this.weatherAPI}/>
-        <Weather/>
-      </div>
-    );
-  }
-}
+        <div className="container">
+            {Lat ? <WeatherMyCity myLocation={MyLocation}/> :
+                <div className="container__preloader"><img src={preloader}/></div>}
+            <div
+                onClick={setActiveForm}
+                className="app_container__ButtonAddCity"
+            >
+                <i onClick={setActiveForm} className=" material-icons ">
+                    add_circle_outline
+                </i>
+            </div>
+            <WeatherOtherCites
+                weatherCites={weatherCites}
+                setActiveCity={setActiveCity}
+                setShowSelect_City={setShowSelect_City}
+                setDeleteCityAC={setDeleteCityAC}
+            />
 
-export default App;*/
-
-
-const App =()=> {
-  const [error, setError] = useState(null);
-  const [isLoaded, setIsLoaded] = useState(false);
-  const [items, setItems] = useState([]);
-  const [city, setCity] = useState('Kazan');
-
-  console.log(city)
-
-  const getCity = (city) => {
-    setCity(city)
-  }
-
-  /*useEffect(() => {
-
-    fetch(`http://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${API_KEY}&units=metric`)
-        .then(res => res.json())
-        .then(
-            (result) => {
-              debugger
-              setIsLoaded(true);
-              setItems(result);
-            },
-            (error) => {
-              setIsLoaded(true);
-              setError(error);
+            {activeForm && (
+                <AddCityForm
+                    setActiveForm={setActiveForm}
+                    getWeatherCity={getWeatherCity}
+                    setNewCityBody={setNewCityBody}
+                    newCityBody={newCityBody}
+                    errorForm={errorForm}
+                    setError={setError}
+                />
+            )}
+            {activeCurrentCity &&
+            <Info
+                setActiveCity={setActiveCity}
+                activeCity={activeCity}
+                weatherCites={weatherCites}
+                activeCurrentCity={activeCurrentCity}
+            />
             }
-        )
-  }, [setCity])*/
-
-  /*if (error) {
-    return <div>Ошибка: {error.message}</div>;
-  } else if (!isLoaded) {
-    return <div>Загрузка...</div>;
-  } else {*/
-    return (
-        <div className="app-container">
-          <Info/>
-          <Form city={getCity}/>
-          <Weather/>
         </div>
     );
-
 }
 
 export default App;
-
-/* useEffect(()=>{
- const weatherAPI = async (e) => {
-        e.preventDefault();
-        let city = e.target.elements.city.value;
-        const api_url = await fetch(
-          `http://api.openweathermap.org/data/2.5/weather?q=Kazan&appid=${API_KEY}&units=metric`
-        );
-        const data = await api_url.json();
-        console.log(data);
- }
-},[])
-
-return (
- <div className="app-container">
-      <Info />
-     <Form weather={weatherAPI} />
-    <Weather />
-    </div>
-)
-}*/
